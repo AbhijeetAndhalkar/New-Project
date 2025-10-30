@@ -1,0 +1,22 @@
+Here's a summary of common development challenges and how this project addressed them:
+
+1.  **Problem: Secure User Authentication and Session Management**
+    *   **Solution:** The project uses Supabase for robust user registration and login, and Flask-Login to manage secure user sessions within the application.
+
+2.  **Problem: Storing Sensitive Information**
+    *   **Solution:** Environment variables (like Supabase API keys) are stored in a `.env` file, which is kept out of version control using `.gitignore`. The `python-dotenv` library loads these variables securely.
+
+3.  **Problem: Consistent and Responsive User Interface**
+    *   **Solution:** Bootstrap 5 is integrated via CDN to provide pre-styled, responsive components (like navigation bars, forms, and alerts), ensuring a consistent look and feel across different devices. Custom CSS in `style.css` allows for specific overrides.
+
+4.  **Problem: Managing Python Project Dependencies**
+    *   **Solution:** A `requirements.txt` file lists all necessary Python packages and their versions. This ensures that anyone setting up the project can install the exact dependencies using `pip install -r requirements.txt`, promoting reproducibility. Virtual environments are recommended to isolate project dependencies.
+
+5.  **Problem: Dynamic Web Page Generation and Reusability**
+    *   **Solution:** Flask's Jinja2 templating engine is used. `base.html` provides a consistent layout that other templates (`index.html`, `login.html`, etc.) extend, reducing code duplication and making it easy to insert dynamic content.
+
+6.  **Problem: Database Interaction for To-Do Items**
+    *   **Solution:** Flask-SQLAlchemy is used to manage a lightweight SQLite database (`todo.db`) for storing and retrieving user-specific To-Do items. This simplifies database operations through an Object-Relational Mapper (ORM).
+
+7.  **Problem: Rapid Web Application Development**
+    *   **Solution:** Flask, a micro web framework, was chosen for its simplicity and flexibility, allowing for quick development of the backend logic and routing.
