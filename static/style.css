@@ -138,3 +138,45 @@ h1, h2, h3, h4, h5, h6 {
 .text-muted {
     color: #6c757d !important;
 }
+
+/* New Task Card Styling */
+.task-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    padding: 18px;
+}
+
+/* Action Button Styling for touch targets */
+.action-button {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex; /* Ensure flex for centering icon */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 767px) {
+    .task-card .flex-col.sm\:flex-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .task-card .sm\:items-center {
+        align-items: flex-start;
+    }
+    .task-card .sm\:justify-between {
+        justify-content: flex-start;
+    }
+    .task-card .sm\:mb-0 {
+        margin-bottom: 8px; /* Add some space below title/badge on mobile */
+    }
+    .task-card .flex.space-x-2 {
+        width: 100%; /* Make buttons full width on mobile */
+        justify-content: space-around; /* Distribute buttons */
+        margin-top: 12px; /* Space above buttons */
+    }
+    .task-card .action-button {
+        flex-grow: 1; /* Make buttons fill available space */
+        padding: 10px 0; /* Adjust padding for full width buttons */
+    }
+}
