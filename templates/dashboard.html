@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TodoApp{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    <i class="fas fa-chart-bar mr-2 text-primary"></i>Dashboard
+                </h1>
+                <p class="text-gray-600 mt-1">Overview of your tasks and productivity</p>
+            </div>
+            <a href="{{ url_for('home') }}" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-tasks mr-2"></i>View All Tasks
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Tasks -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-primary bg-opacity-10">
+                    <i class="fas fa-tasks text-primary text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Total Tasks</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ total }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Tasks -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100">
+                    <i class="fas fa-clock text-yellow-600 text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Pending</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ pending }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ongoing Tasks -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100">
+                    <i class="fas fa-play text-blue-600 text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Ongoing</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ ongoing }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed Tasks -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100">
+                    <i class="fas fa-check text-green-600 text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600">Completed</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ completed }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Overview -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-chart-pie mr-2 text-primary"></i>Progress Overview
+        </h2>
+        {% if total > 0 %}
+            <div class="space-y-4">
+                <!-- Progress Bar -->
+                <div>
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Completion Rate</span>
+                        <span>{{ ((completed / total) * 100)|round(1) }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="bg-success h-3 rounded-full transition-all duration-300" style="width: {{ ((completed / total) * 100)|round(1) }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Status Distribution -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                        <div class="text-2xl font-bold text-yellow-600">{{ pending }}</div>
+                        <div class="text-sm text-yellow-700">Pending Tasks</div>
+                        <div class="text-xs text-yellow-600 mt-1">{{ ((pending / total) * 100)|round(1) }}% of total</div>
+                    </div>
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">{{ ongoing }}</div>
+                        <div class="text-sm text-blue-700">Ongoing Tasks</div>
+                        <div class="text-xs text-blue-600 mt-1">{{ ((ongoing / total) * 100)|round(1) }}% of total</div>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600">{{ completed }}</div>
+                        <div class="text-sm text-green-700">Completed Tasks</div>
+                        <div class="text-xs text-green-600 mt-1">{{ ((completed / total) * 100)|round(1) }}% of total</div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <div class="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-gray-100 mb-4">
+                    <i class="fas fa-chart-pie text-gray-400 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No tasks yet</h3>
+                <p class="text-gray-500 mb-4">Start adding tasks to see your progress overview.</p>
+                <a href="{{ url_for('home') }}" class="bg-primary text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Add Your First Task
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Tasks -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-gray-900">
+                <i class="fas fa-history mr-2 text-primary"></i>Recent Tasks
+            </h2>
+            <a href="{{ url_for('home') }}" class="text-primary hover:text-blue-700 text-sm font-medium">View All</a>
+        </div>
+
+        {% if recent %}
+            <div class="space-y-3">
+                {% for todo in recent %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0">
+                                <span class="inline-flex items-center justify-center h-8 w-8 rounded-full
+                                    {% if todo.status == 'completed' %}bg-green-100{% elif todo.status == 'ongoing' %}bg-blue-100{% else %}bg-yellow-100{% endif %}">
+                                    {% if todo.status == 'completed' %}
+                                        <i class="fas fa-check text-green-600"></i>
+                                    {% elif todo.status == 'ongoing' %}
+                                        <i class="fas fa-play text-blue-600"></i>
+                                    {% else %}
+                                        <i class="fas fa-clock text-yellow-600"></i>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ todo.title }}</p>
+                                <p class="text-xs text-gray-500">{{ todo.date_created.strftime('%b %d, %Y') }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full
+                                {% if todo.status == 'completed' %}bg-green-100 text-green-800{% elif todo.status == 'ongoing' %}bg-blue-100 text-blue-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                {{ todo.status.title() }}
+                            </span>
+                            <a href="{{ url_for('update', sno=todo.sno) }}" class="text-primary hover:text-blue-700">
+                                <i class="fas fa-edit text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-gray-100 mb-4">
+                    <i class="fas fa-history text-gray-400"></i>
+                </div>
+                <h3 class="text-sm font-medium text-gray-900 mb-2">No recent tasks</h3>
+                <p class="text-gray-500 text-sm">Your recent tasks will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-bolt mr-2 text-primary"></i>Quick Actions
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="{{ url_for('home') }}?status=pending" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
+                <i class="fas fa-clock text-yellow-600 mr-3"></i>
+                <div>
+                    <p class="font-medium text-gray-900">View Pending</p>
+                    <p class="text-sm text-gray-600">Check tasks waiting to start</p>
+                </div>
+            </a>
+            <a href="{{ url_for('home') }}?status=ongoing" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                <i class="fas fa-play text-blue-600 mr-3"></i>
+                <div>
+                    <p class="font-medium text-gray-900">View Ongoing</p>
+                    <p class="text-sm text-gray-600">See tasks in progress</p>
+                </div>
+            </a>
+            <a href="{{ url_for('home') }}?status=completed" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                <i class="fas fa-check text-green-600 mr-3"></i>
+                <div>
+                    <p class="font-medium text-gray-900">View Completed</p>
+                    <p class="text-sm text-gray-600">Review finished tasks</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
