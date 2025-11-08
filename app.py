@@ -16,23 +16,26 @@ load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-print(f"Supabase URL: {SUPABASE_URL}")
-if SUPABASE_KEY:
-    print(f"Supabase Key (first 5 chars): {SUPABASE_KEY[:5]}...")
-else:
-    print("Supabase Key not found in environment.")
+print(f"DEBUG: SUPABASE_URL loaded: {SUPABASE_URL}")
+print(f"DEBUG: SUPABASE_KEY loaded: {'<present>' if SUPABASE_KEY else '<not present>'}")
 
-try:
-    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-except Exception as e:
-    print(f"Failed to connect to Supabase: {e}")
+if not SUPABASE_URL or not SUPABASE_KEY:
+    print("ERROR: Supabase environment variables are missing or empty.")
     supabase = None
+else:
+    try:
+        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+        print("DEBUG: Supabase client created successfully.")
+    except Exception as e:
+        print(f"ERROR: Failed to connect to Supabase: {e}")
+        supabase = None
 
 # -----------------------------
 # Initialize Flask app
 # -----------------------------
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY") or os.urandom(24)
+app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY", os.urandom(24).hex()) # Use .hex() for string representation
+print(f"DEBUG: FLASK_SECRET_KEY loaded: {'<present>' if app.config['SECRET_KEY'] else '<not present>'}")
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'todo.db')
